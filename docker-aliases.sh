@@ -132,19 +132,6 @@ function dkrun () {
     return 0
 };
 
-function dkexec () {
-    if ! __dkcheck "$1"; then
-        return 1
-    fi
-
-    # Exec container
-    local DOCKER_EXEC_CMD="docker exec -it $DOCKER_CONTAINER_NAME /bin/bash"
-    echo $DOCKER_EXEC_CMD
-    $DOCKER_EXEC_CMD
-
-    return 0
-};
-
 function dkstop () {
     if ! __dkcheck "$1"; then
         return 1
@@ -154,6 +141,32 @@ function dkstop () {
     local DOCKER_STOP_CMD="docker stop $DOCKER_CONTAINER_NAME"
     echo $DOCKER_STOP_CMD
     $DOCKER_STOP_CMD
+
+    return 0
+};
+
+function dkexec () {
+    if ! __dkcheck "$1"; then
+        return 1
+    fi
+
+    # Exec container
+    local DOCKER_EXEC_CMD="docker exec -it -u $DOCKER_CONTAINER_USER $DOCKER_CONTAINER_NAME /bin/bash"
+    echo $DOCKER_EXEC_CMD
+    $DOCKER_EXEC_CMD
+
+    return 0
+};
+
+function dkexec-root () {
+    if ! __dkcheck "$1"; then
+        return 1
+    fi
+
+    # Exec container
+    local DOCKER_EXEC_CMD="docker exec -it $DOCKER_CONTAINER_NAME /bin/bash"
+    echo $DOCKER_EXEC_CMD
+    $DOCKER_EXEC_CMD
 
     return 0
 };

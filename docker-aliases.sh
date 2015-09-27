@@ -6,8 +6,18 @@ function __dkcheck () {
     if [ -n "$1" ]; then
         DOCKER_DIRECTORY=$DOCKER_DIRECTORY/${1%/}
     fi
+    if [ -d "$DOCKER_DIRECTORY/docker" ]; then
+        DOCKER_DIRECTORY=$DOCKER_DIRECTORY/docker
+    fi
     if [ ! -d $DOCKER_DIRECTORY ]; then
         echo Error: docker directory does not exists: $DOCKER_DIRECTORY
+        return 1
+    fi
+
+    # Check Dockerfile
+    local DOCKER_FILE=$DOCKER_DIRECTORY/Dockerfile
+    if [ ! -f $DOCKER_FILE ]; then
+        echo Error: missing Dockerfile: $DOCKER_FILE
         return 1
     fi
 
@@ -42,13 +52,6 @@ function __dkcheck () {
 
 function dkbuild () {
     if ! __dkcheck "$1"; then
-        return 1
-    fi
-
-    # Check Dockerfile
-    local DOCKER_FILE=$DOCKER_DIRECTORY/Dockerfile
-    if [ ! -f $DOCKER_FILE ]; then
-        echo Error: missing Dockerfile: $DOCKER_FILE
         return 1
     fi
 

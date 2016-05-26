@@ -132,6 +132,19 @@ function dkrun () {
     return 0
 };
 
+function dkstart () {
+    if ! __dkcheck "$1"; then
+        return 1
+    fi
+
+    # Start container
+    local DOCKER_START_CMD="docker start $DOCKER_CONTAINER_NAME"
+    echo $DOCKER_START_CMD
+    $DOCKER_START_CMD
+
+    return 0
+}
+
 function dkstop () {
     if ! __dkcheck "$1"; then
         return 1
